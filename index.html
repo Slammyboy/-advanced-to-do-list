@@ -1,190 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced To-Do List with React</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced To-Do List with Animations</title>
+
+    <!-- React and Babel -->
     <script src="https://unpkg.com/react/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS with Animations -->
     <style>
-        body {
-            background-color: #f8f9fa;
-            padding-top: 20px;
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+      body {
+        background: url("https://media.istockphoto.com/id/1502315264/photo/time-late-and-a-black-man-on-a-phone-call-at-work-for-business-networking-and-deadline.jpg?s=1024x1024&w=is&k=20&c=pIxQwEcI4CHhCIH1INggYqHmB5UV6OhY24FwmxfwnKc=")
+          no-repeat center center fixed;
+        background-size: cover;
+      }
+      .container {
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 15px;
+        padding: 20px;
+        max-width: 600px;
+        margin: 50px auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .priority-high {
+        border-left: 4px solid red;
+      }
+      .priority-medium {
+        border-left: 4px solid orange;
+      }
+      .priority-low {
+        border-left: 4px solid green;
+      }
+      .completed {
+        text-decoration: line-through;
+        color: gray;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      /* Animation for task list items */
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      .fade-out {
+        animation: fadeOut 0.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
         }
-        .container {
-            max-width: 600px;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        .priority-high {
-            border-left: 4px solid red;
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: translateX(0);
         }
-        .priority-medium {
-            border-left: 4px solid orange;
+        to {
+          opacity: 0;
+          transform: translateX(100%);
         }
-        .priority-low {
-            border-left: 4px solid green;
-        }
-        .completed {
-            text-decoration: line-through;
-            color: gray;
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div id="root"></div>
+      <div id="root"></div>
     </div>
 
     <script type="text/babel">
-        class TodoApp extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                    tasks: JSON.parse(localStorage.getItem('tasks')) || [],
-                    newTask: '',
-                    category: 'Work',
-                    priority: 'high',
-                    deadline: ''
-                };
-            }
-
-            handleInputChange = (e) => {
-                this.setState({ [e.target.name]: e.target.value });
-            };
-
-            addTask = () => {
-                const { newTask, category, priority, deadline } = this.state;
-
-                if (!newTask) {
-                    alert('Task cannot be empty');
-                    return;
-                }
-
-                const task = {
-                    text: newTask,
-                    category,
-                    priority,
-                    deadline,
-                    completed: false
-                };
-
-                const updatedTasks = [...this.state.tasks, task];
-                this.setState({ tasks: updatedTasks });
-                localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-                this.clearForm();
-            };
-
-            clearForm = () => {
-                this.setState({
-                    newTask: '',
-                    category: 'Work',
-                    priority: 'high',
-                    deadline: ''
-                });
-            };
-
-            toggleComplete = (index) => {
-                const updatedTasks = [...this.state.tasks];
-                updatedTasks[index].completed = !updatedTasks[index].completed;
-                this.setState({ tasks: updatedTasks });
-                localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-            };
-
-            deleteTask = (index) => {
-                const updatedTasks = [...this.state.tasks];
-                updatedTasks.splice(index, 1);
-                this.setState({ tasks: updatedTasks });
-                localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-            };
-
-            render() {
-                return (
-                    <div>
-                        <h1 className="text-center mb-4">Advanced To-Do List</h1>
-                        <div className="mb-4">
-                            <input
-                                type="text"
-                                name="newTask"
-                                value={this.state.newTask}
-                                onChange={this.handleInputChange}
-                                className="form-control"
-                                placeholder="Enter task"
-                            />
-                            <input
-                                type="date"
-                                name="deadline"
-                                value={this.state.deadline}
-                                onChange={this.handleInputChange}
-                                className="form-control mt-2"
-                            />
-                            <select
-                                name="category"
-                                value={this.state.category}
-                                onChange={this.handleInputChange}
-                                className="form-select mt-2"
-                            >
-                                <option value="Work">Work</option>
-                                <option value="Personal">Personal</option>
-                                <option value="Shopping">Shopping</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <select
-                                name="priority"
-                                value={this.state.priority}
-                                onChange={this.handleInputChange}
-                                className="form-select mt-2"
-                            >
-                                <option value="high">High Priority</option>
-                                <option value="medium">Medium Priority</option>
-                                <option value="low">Low Priority</option>
-                            </select>
-                            <button
-                                className="btn btn-primary mt-3 w-100"
-                                onClick={this.addTask}
-                            >
-                                Add Task
-                            </button>
-                        </div>
-
-                        <h3>Your Tasks</h3>
-                        <ul className="list-group">
-                            {this.state.tasks.map((task, index) => (
-                                <li
-                                    key={index}
-                                    className={`list-group-item d-flex justify-content-between align-items-center ${task.priority === 'high' ? 'priority-high' : task.priority === 'medium' ? 'priority-medium' : 'priority-low'} ${task.completed ? 'completed' : ''}`}
-                                >
-                                    <div>
-                                        <strong>{task.category}</strong>: {task.text}
-                                        <br />
-                                        {task.deadline && (
-                                            <small className="text-muted">Due: {task.deadline}</small>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <button
-                                            className={`btn btn-sm ${task.completed ? 'btn-secondary' : 'btn-success'} me-2`}
-                                            onClick={() => this.toggleComplete(index)}
-                                        >
-                                            {task.completed ? 'Unmark' : 'Complete'}
-                                        </button>
-                                        <button
-                                            className="btn btn-danger btn-sm"
-                                            onClick={() => this.deleteTask(index)}
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                );
-            }
+      class TodoApp extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            tasks: JSON.parse(localStorage.getItem("tasks")) || [],
+            newTask: "",
+            category: "Work",
+            priority: "high",
+            deadline: "",
+            removingTaskIndex: null, // Track task to remove
+          };
         }
 
-        ReactDOM.render(<TodoApp />, document.getElementById('root'));
+        handleInputChange = (e) => {
+          this.setState({ [e.target.name]: e.target.value });
+        };
+
+        addTask = () => {
+          const { newTask, category, priority, deadline } = this.state;
+
+          if (!newTask) {
+            alert("Please enter a task");
+            return;
+          }
+
+          const task = {
+            text: newTask,
+            category,
+            priority,
+            deadline,
+            completed: false,
+          };
+
+          const tasks = [...this.state.tasks, task];
+          this.setState({ tasks });
+          localStorage.setItem("tasks", JSON.stringify(tasks));
+          this.clearForm();
+        };
+
+        clearForm = () => {
+          this.setState({
+            newTask: "",
+            category: "Work",
+            priority: "high",
+            deadline: "",
+          });
+        };
+
+        toggleComplete = (index) => {
+          const tasks = [...this.state.tasks];
+          tasks[index].completed = !tasks[index].completed;
+          this.setState({ tasks });
+          localStorage.setItem("tasks", JSON.stringify(tasks));
+        };
+
+        deleteTask = (index) => {
+          this.setState({ removingTaskIndex: index }, () => {
+            setTimeout(() => {
+              const tasks = [...this.state.tasks];
+              tasks.splice(index, 1);
+              this.setState({ tasks, removingTaskIndex: null });
+              localStorage.setItem("tasks", JSON.stringify(tasks));
+            }, 500); // Delay to allow the fade-out animation
+          });
+        };
+
+        render() {
+          return (
+            <div>
+              <h1 className="mb-4"> To-Do List</h1>
+              <div className="mb-4">
+                <input
+                  type="text"
+                  name="newTask"
+                  value={this.state.newTask}
+                  onChange={this.handleInputChange}
+                  className="form-control"
+                  placeholder="Enter your task"
+                />
+                <input
+                  type="time"
+                  name="Time"
+                  value={this.state.Time}
+                  onChange={this.handleInputChange}
+                  className="form-control mt-2"
+                />
+
+                <input
+                  type="date"
+                  name="deadline"
+                  value={this.state.deadline}
+                  onChange={this.handleInputChange}
+                  className="form-control mt-2"
+                />
+                <select
+                  name="category"
+                  value={this.state.category}
+                  onChange={this.handleInputChange}
+                  className="form-select mt-2"
+                >
+                  <option value="Work">Work</option>
+                  <option value="Personal">Personal</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Other">Other</option>
+                </select>
+                <select
+                  name="priority"
+                  value={this.state.priority}
+                  onChange={this.handleInputChange}
+                  className="form-select mt-2"
+                >
+                  <option value="high">High Priority</option>
+                  <option value="medium">Medium Priority</option>
+                  <option value="low">Low Priority</option>
+                </select>
+                <button
+                  className="btn btn-primary mt-3 w-100"
+                  onClick={this.addTask}
+                >
+                  Add Task
+                </button>
+              </div>
+
+              <h3>Your Tasks</h3>
+              <ul className="list-group">
+                {this.state.tasks.length === 0 && (
+                  <p className="text-center">No tasks yet.</p>
+                )}
+                {this.state.tasks.map((task, index) => (
+                  <li
+                    key={index}
+                    className={`list-group-item d-flex justify-content-between align-items-center ${
+                      task.priority === "high"
+                        ? "priority-high"
+                        : task.priority === "medium"
+                        ? "priority-medium"
+                        : "priority-low"
+                    } ${task.completed ? "completed" : ""} ${
+                      this.state.removingTaskIndex === index
+                        ? "fade-out"
+                        : "fade-in"
+                    }`}
+                  >
+                    <div>
+                      <strong>{task.category}</strong>: {task.text}
+                      <br />
+                      {task.deadline && (
+                        <small className="text-muted">
+                          Due: {task.deadline}
+                        </small>
+                      )}
+                    </div>
+                    <div>
+                      <button
+                        className={`btn btn-sm ${
+                          task.completed ? "btn-secondary" : "btn-success"
+                        } me-2`}
+                        onClick={() => this.toggleComplete(index)}
+                      >
+                        {task.completed ? "Unmark" : "Complete"}
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => this.deleteTask(index)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(<TodoApp />, document.getElementById("root"));
     </script>
-</body>
+  </body>
 </html>
 
