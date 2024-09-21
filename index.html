@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-image: url("https://www.shutterstock.com/shutterstock/photos/2479545731/display_1500/stock-photo-airplane-suitcase-and-umbrella-on-white-calendar-background-travel-holiday-or-annual-leave-travel-2479545731.jpg"); /* Replace with your image URL */
+        background-size: cover;
+        background-position: center;
+        color: white;
+      }
+
+      header {
+        background: rgba(0, 0, 0, 0.7);
+        padding: 1em;
+        text-align: center;
+      }
+
+      header nav ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      header nav ul li {
+        display: inline;
+        margin-right: 20px;
+      }
+
+      header nav ul li a {
+        color: white;
+        text-decoration: none;
+      }
+
+      section {
+        padding: 50px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.5); /* Dark overlay for readability */
+        margin: 20px;
+        border-radius: 10px;
+      }
+
+      /* Landing Page */
+      .landing {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      .overlay {
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 50px;
+        border-radius: 10px;
+      }
+
+      /* Login Form */
+      .login-section form {
+        display: inline-block;
+        margin-top: 20px;
+      }
+
+      .login-section input {
+        display: block;
+        margin: 10px 0;
+        padding: 10px;
+        width: 200px;
+      }
+
+      .login-section button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* Testimonials */
+      .testimonial {
+        margin: 20px 0;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        display: inline-block;
+        width: 50%;
+      }
+
+      footer {
+        background: rgba(0, 0, 0, 0.7);
+        padding: 1em;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#landing">Home</a></li>
+          <li><a href="#login">Login</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Landing Page -->
+    <section class="landing" id="landing">
+      <div class="overlay">
+        <h1>Stay Organized with Our To-Do List App</h1>
+        <a
+          href="#login"
+          class="cta-button"
+          style="
+            background-color: #ff5733;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+          "
+          >Get Started</a
+        >
+      </div>
+    </section>
+
+    <!-- Login Section -->
+    <section class="login-section" id="login">
+      <h2>Login</h2>
+      <form id="login-form">
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="#">Sign Up</a></p>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+      <h2>What Our Users Say</h2>
+      <div class="testimonial">
+        <p>"This app has transformed my productivity!"</p>
+        <p>- Sarah</p>
+      </div>
+      <div class="testimonial">
+        <p>"Simple and effective. I love it!"</p>
+        <p>- John</p>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+      <h2>About Our App</h2>
+      <p>
+        Our to-do list app is designed to help you stay organized and
+        productive, allowing you to manage your tasks efficiently.
+      </p>
+    </section>
+
+    <footer>
+      <p>© 2024 To-Do List App | All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Function to show sections based on the hash in the URL
+      function showSection() {
+        const hash = window.location.hash;
+        document.querySelectorAll("section").forEach((section) => {
+          section.style.display = "none"; // Hide all sections
+        });
+        if (hash) {
+          const sectionToShow = document.querySelector(hash);
+          if (sectionToShow) {
+            sectionToShow.style.display = "block"; // Show the targeted section
+          }
+        } else {
+          document.querySelector(".landing").style.display = "flex"; // Show landing by default
+        }
+      }
+
+      window.addEventListener("hashchange", showSection);
+      window.addEventListener("load", showSection);
+    </script>
+  </body>
+</html>
+
