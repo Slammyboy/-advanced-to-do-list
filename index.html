@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survey Website with Pop-up</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      header,
+      footer {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      nav ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      nav ul li {
+        display: inline;
+        margin: 0 15px;
+      }
+
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .landing-page {
+        text-align: center;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        background-color: #f8f9fa;
+      }
+
+      .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 300%; /* Three times the width for three images */
+        height: 100%;
+        display: flex;
+        animation: move 30s linear infinite; /* Slower animation for smoother effect */
+      }
+
+      .background img {
+        width: 33.33%;
+        height: 100%;
+      }
+
+      @keyframes move {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-66.66%);
+        } /* Shift by two images */
+      }
+
+      .content {
+        position: relative;
+        z-index: 2;
+        color: #fff;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+      }
+
+      .btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      .survey-page {
+        padding: 30px;
+        background-color: #f9f9f9;
+        display: none; /* Hidden until user submits name/email */
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        flex-wrap: wrap;
+      }
+
+      .footer-content div {
+        width: 30%;
+        margin-bottom: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .footer-content div {
+          width: 100%;
+        }
+      }
+
+      .social-links a {
+        color: #fff;
+        margin-right: 10px;
+        font-size: 1.5rem;
+        text-decoration: none;
+      }
+
+      .social-links a:hover {
+        color: #ccc;
+      }
+
+      .social-share {
+        margin-top: 15px;
+      }
+
+      .social-share a {
+        display: inline-block;
+        margin: 5px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+      }
+
+      .social-share a:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.2/gsap.min.js"></script>
+
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#landing">Home</a></li>
+          <li><a href="#survey" id="start-survey">Survey</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div id="landing" class="landing-page">
+      <div class="background">
+        <img
+          src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fG5hdHVyZXxlbnwwfHx8fDE2Mjg3NjY1ODg&ixlib=rb-1.2.1&q=80&w=1080"
+          alt="Nature"
+        />
+        <img
+          src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGnpZHN8ZW58MHx8fHwxNjI4NzY2Njc1&ixlib=rb-1.2.1&q=80&w=1080"
+          alt="City"
+        />
+        <img
+          src="https://media.istockphoto.com/id/2054515915/photo/satisfaction-document-checklist-database-contract-checkbox-insurance-manager-technology.jpg?s=1024x1024&w=is&k=20&c=Q3iEd8biJjsv2ndK5et6KAxXB633Ci41lZ5BqqHZgWI="
+          alt="Tech"
+        />
+      </div>
+      <div class="content">
+        <h1>Welcome to Our Survey</h1>
+        <p>
+          Your opinion matters! Help us improve by completing the survey below.
+        </p>
+        <a href="#survey" id="start-survey-home" class="btn">Take the Survey</a>
+      </div>
+    </div>
+
+    <div id="name-email-modal" class="modal">
+      <div class="modal-content">
+        <h2>Enter Your Details</h2>
+        <label for="name">Name:</label>
+        <input type="text" id="name" required /><br />
+        <label for="email">Email:</label>
+        <input type="email" id="email" required /><br />
+        <button id="submit-details" class="btn">Submit</button>
+      </div>
+    </div>
+
+    <div id="survey" class="survey-page">
+      <h2>Customer Satisfaction Survey</h2>
+
+      <form id="survey-form">
+        <div class="question">
+          <h3>1. How satisfied are you with our product?</h3>
+          <input type="radio" id="q1a" name="q1" value="Very Satisfied" />
+          <label for="q1a">Very Satisfied</label><br />
+          <input type="radio" id="q1b" name="q1" value="Satisfied" />
+          <label for="q1b">Satisfied</label><br />
+          <input type="radio" id="q1c" name="q1" value="Neutral" />
+          <label for="q1c">Neutral</label><br />
+          <input type="radio" id="q1d" name="q1" value="Dissatisfied" />
+          <label for="q1d">Dissatisfied</label><br />
+          <input type="radio" id="q1e" name="q1" value="Very Dissatisfied" />
+          <label for="q1e">Very Dissatisfied</label>
+        </div>
+
+        <div class="question">
+          <h3>2. How likely are you to recommend our product to others?</h3>
+          <input type="radio" id="q2a" name="q2" value="Very Likely" />
+          <label for="q2a">Very Likely</label><br />
+          <input type="radio" id="q2b" name="q2" value="Likely" />
+          <label for="q2b">Likely</label><br />
+          <input type="radio" id="q2c" name="q2" value="Neutral" />
+          <label for="q2c">Neutral</label><br />
+          <input type="radio" id="q2d" name="q2" value="Unlikely" />
+          <label for="q2d">Unlikely</label><br />
+          <input type="radio" id="q2e" name="q2" value="Very Unlikely" />
+          <label for="q2e">Very Unlikely</label>
+        </div>
+        <div class="question">
+          <h3>3. How likely are you to shop this product again?</h3>
+          <input type="radio" id="q1a" name="q1" value="Very Satisfied" />
+          <label for="q1a">Very likely</label><br />
+          <input type="radio" id="q1b" name="q1" value="Satisfied" />
+          <label for="q1b">likely</label><br />
+          <input type="radio" id="q1c" name="q1" value="Neutral" />
+          <label for="q1c">Neutral</label><br />
+          <input type="radio" id="q1d" name="q1" value="Dissatisfied" />
+          <label for="q1d">Unlikely</label><br />
+          <input type="radio" id="q1e" name="q1" value="Very Dissatisfied" />
+          <label for="q1e">Very Unlikely</label>
+        </div>
+        <div class="question">
+          <h3>4. How satisfied are you with the delivery process?</h3>
+          <input type="radio" id="q1a" name="q1" value="Very Satisfied" />
+          <label for="q1a">Very Satisfied</label><br />
+          <input type="radio" id="q1b" name="q1" value="Satisfied" />
+          <label for="q1b">Satisfied</label><br />
+          <input type="radio" id="q1c" name="q1" value="Neutral" />
+          <label for="q1c">Neutral</label><br />
+          <input type="radio" id="q1d" name="q1" value="Dissatisfied" />
+          <label for="q1d">Dissatisfied</label><br />
+          <input type="radio" id="q1e" name="q1" value="Very Dissatisfied" />
+          <label for="q1e">Very Dissatisfied</label>
+        </div>
+        <div class="question">
+          <h3>5. How likely are you to share this survey ?</h3>
+          <input type="radio" id="q1a" name="q1" value="Very Satisfied" />
+          <label for="q1a">Very likely</label><br />
+          <input type="radio" id="q1b" name="q1" value="Satisfied" />
+          <label for="q1b">likely</label><br />
+          <input type="radio" id="q1c" name="q1" value="Neutral" />
+          <label for="q1c">Neutral</label><br />
+          <input type="radio" id="q1d" name="q1" value="Dissatisfied" />
+          <label for="q1d">Unlikely</label><br />
+          <input type="radio" id="q1e" name="q1" value="Very Dissatisfied" />
+          <label for="q1e">Very Unlikely</label>
+        </div>
+
+        <input type="submit" value="Submit Survey" class="btn" />
+      </form>
+    </div>
+
+    <div id="thank-you-modal" class="modal">
+      <div class="modal-content">
+        <h2>Thank You!</h2>
+        <p>Your responses have been submitted.</p>
+        <p>Share your results:</p>
+        <input
+          type="text"
+          id="shareable-link"
+          readonly
+          style="width: 100%"
+        /><br />
+        <button id="close-modal" class="btn">Close</button>
+        <div class="social-share"></div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <div id="about">
+          <h3>About Us</h3>
+          <p>
+            We are committed to delivering high-quality products and services.
+            This survey helps us serve you better.
+          </p>
+        </div>
+        <div id="contact">
+          <h3>Contact Us</h3>
+          <p>Email: support@Customersurvey.com<br />Phone: (234) 1024 1024</p>
+        </div>
+        <div class="social-links">
+          <h3>Follow Us</h3>
+          <a href="#">&#x1F426; Twitter</a>
+          <a href="#">&#x1F4F7; Instagram</a>
+          <a href="#">&#x1F4F1; Facebook</a>
+        </div>
+      </div>
+      <p>&copy; 2024 Survey Website. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const surveyForm = document.getElementById("survey-form");
+      const modal = document.getElementById("thank-you-modal");
+      const closeModal = document.getElementById("close-modal");
+      const shareableLinkInput = document.getElementById("shareable-link");
+      const socialShareDiv = document.querySelector(".social-share");
+      const nameEmailModal = document.getElementById("name-email-modal");
+      const submitDetails = document.getElementById("submit-details");
+      const nameInput = document.getElementById("name");
+      const emailInput = document.getElementById("email");
+      const surveyPage = document.getElementById("survey");
+
+      // Function to show name/email modal
+      function showNameEmailModal() {
+        nameEmailModal.style.display = "block";
+        gsap.fromTo(
+          nameEmailModal,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.5 }
+        );
+      }
+
+      // Show name/email modal on both survey link clicks
+      document
+        .getElementById("start-survey")
+        .addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent default link action
+          showNameEmailModal();
+        });
+
+      document
+        .getElementById("start-survey-home")
+        .addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent default link action
+          showNameEmailModal();
+        });
+
+      // Handle name/email submission
+      submitDetails.addEventListener("click", function () {
+        if (nameInput.value && emailInput.value) {
+          nameEmailModal.style.display = "none"; // Close modal
+          surveyPage.style.display = "block"; // Show survey page
+          gsap.fromTo(
+            surveyPage,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.5 }
+          ); // Fade in animation
+        } else {
+          alert("Please enter your name and email.");
+        }
+      });
+
+      surveyForm.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const formData = new FormData(surveyForm);
+        const data = Object.fromEntries(formData.entries()); // Convert to an object
+
+        // Generate a shareable link (simple example)
+        const baseURL = window.location.origin + "/result"; // Adjust based on your URL structure
+        const shareableLink = `${baseURL}?q1=${encodeURIComponent(
+          data.q1
+        )}&q2=${encodeURIComponent(data.q2)}`;
+
+        // Save to Local Storage
+        localStorage.setItem("surveyResults", JSON.stringify(data));
+
+        // Update shareable link input
+        shareableLinkInput.value = shareableLink;
+
+        // Generate social media share buttons
+        socialShareDiv.innerHTML = `
+                <a href="https://twitter.com/share?url=${encodeURIComponent(
+                  shareableLink
+                )}" target="_blank">Share on Twitter</a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                  shareableLink
+                )}" target="_blank">Share on Facebook</a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+                  shareableLink
+                )}" target="_blank">Share on LinkedIn</a>
+            `;
+
+        // Show the modal
+        modal.style.display = "block";
+        gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.5 }); // Fade in animation
+      });
+
+      // Close modal functionality
+      closeModal.addEventListener("click", function () {
+        gsap.to(modal, {
+          opacity: 0,
+          duration: 0.5,
+          onComplete: () => {
+            modal.style.display = "none"; // Hide the modal after fading out
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
+
